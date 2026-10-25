@@ -1,0 +1,9 @@
+setting,range_resolution_cm,PSLR_dB,Pd_CA,Pfa_CA,err_std_CA_mm,Pd_OS,Pfa_OS,err_std_OS_mm
+"default (B 8 kHz, T 10 ms, Taylor, Pfa 1e-4, 16 train, 8 guard cells)",2.14,-36.6,0.932,1.48e-04,2.17,0.890,1.51e-04,2.17
+"narrow band B 3 kHz, T 20 ms",5.72,-35.5,0.996,0.00e+00,3.77,1.000,4.60e-05,3.77
+"wide band B 16 kHz, T 5 ms, f0 2 kHz",1.07,-36.5,0.432,2.29e-04,1.49,0.398,2.22e-04,1.48
+rectangular window,2.14,-13.4,0.992,6.60e-05,1.68,0.974,7.03e-05,1.66
+Hamming window,2.14,-38.3,0.904,1.42e-04,2.29,0.858,1.62e-04,2.28
+Pfa 1e-2,2.14,-36.6,1.000,1.09e-02,2.15,1.000,1.08e-02,2.15
+fewer training cells (8 per side),2.14,-36.6,0.844,1.32e-04,2.12,0.764,1.52e-04,2.12
+warm air c = 346 m/s,2.16,-36.6,0.908,1.48e-04,2.05,0.886,1.51e-04,2.03

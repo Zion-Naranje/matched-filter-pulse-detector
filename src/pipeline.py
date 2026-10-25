@@ -21,7 +21,7 @@ class RadarConfig:
     window: str = "taylor"      # replica window: rectangular / hamming / taylor
     detector: str = "os"        # 'ca' or 'os'
     n_train: int = 16           # training cells per side
-    n_guard: int = 4            # guard cells per side
+    n_guard: int = 8            # guard cells per side (>= main-lobe half width)
     pfa: float = 1e-4           # design false-alarm probability per cell
     k_frac: float = 0.75        # OS-CFAR rank as a fraction of the training cells
     stride: int = 0             # training-cell spacing; 0 = auto = round(fs / B)
