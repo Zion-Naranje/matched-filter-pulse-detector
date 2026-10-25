@@ -1,0 +1,4 @@
+window,PSLR_dB,mainlobe_-3dB_width_cm,mainlobe_null_to_null_cm,SNR_loss_dB
+rectangular,-13.41,1.86,4.29,0.00
+hamming,-38.29,2.79,8.58,1.35
+taylor,-36.56,2.65,7.86,1.14
