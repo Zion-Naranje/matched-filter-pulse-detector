@@ -86,13 +86,11 @@ box(s, 1.2, 6.8, 11, 0.5, ["Template matching of environmental sounds with norma
 
 s = prs.slides.add_slide(BLANK); title(s, "Comparative Study of Literature", 3)
 rows = [("Paper", "Year", "Takeaway"),
-        ("BASE PAPER: Nolasco et al., Learning to detect an animal sound from five examples, Ecological Informatics [17]", "2023", "Detect a sound from few examples; template matching is the classic baseline"),
-        ("Tutul, Buchem, Pinkwart, cross-correlation vs CNN sound detection (arXiv preprint) [18]", "2026", "NCC with a fixed threshold detects a stored sound"),
-        ("Piczak, ESC dataset [1], [2]", "2015", "Labelled clips, 50 classes; data used here"),
-        ("Richards, Fundamentals of Radar Signal Processing [4]", "2014", "Matched filter and correlation detection"),
-        ("Richards, Scheer, Holm, Principles of Modern Radar [5]", "2010", "Correlation detection and thresholds"),
-        ("Skolnik, Radar Handbook [6]", "2008", "Matched filtering reference"),
-        ("TU Berlin, Matched Filter and Pulse Compression [7]", "n.d.", "FFT correlation in Python")]
+        ("BASE PAPER: Tutul, Buchem, Pinkwart, cross-correlation vs CNN sound detection (arXiv preprint) [1]", "2026", "Normalised cross-correlation + fixed threshold detects a stored sound, no training"),
+        ("Nolasco et al., Learning to detect an animal sound from five examples, Ecol. Informatics [2]", "2023", "Few-shot detection; template matching is the traditional baseline"),
+        ("Nolasco et al., Few-shot bioacoustic event detection, DCASE 2022 [3]", "2022", "Challenge overview; detecting a sound from few examples is still open"),
+        ("Gong, Chung, Glass, AST: Audio Spectrogram Transformer, Interspeech [4]", "2021", "Learned classifier on spectrograms; reports 95.6 % on ESC-50"),
+        ("Kong et al., PANNs, IEEE/ACM TASLP [5]", "2020", "Pretrained audio networks transfer to other tasks")]
 tbl = s.shapes.add_table(len(rows), 3, Inches(0.5), Inches(1.3), Inches(12.3), Inches(4.6)).table
 for j, w in enumerate((6.3, 1.3, 4.7)):
     tbl.columns[j].width = Inches(w)
@@ -101,11 +99,11 @@ for i, r in enumerate(rows):
         c = tbl.cell(i, j); c.text = ""
         runs(c.text_frame.paragraphs[0], t, 14, bold=(i == 0), color=RGBColor(255, 255, 255) if i == 0 else None)
         c.fill.solid(); c.fill.fore_color.rgb = NAVY if i == 0 else (LIGHT if i % 2 else RGBColor(255, 255, 255))
-box(s, 0.5, 6.3, 12.3, 0.9, ["Base paper: title, authors, journal and DOI checked against repository records; summarised from its abstract (full text not read). Latest-to-oldest after the base paper."], 13, color=GREY)
+box(s, 0.5, 6.3, 12.3, 0.9, ["Base paper: arXiv:2607.16299 (July 2026, open-access preprint), checked against its listing; summarised from the abstract only. All papers 2020 or later, latest to oldest."], 13, color=GREY)
 
 s = prs.slides.add_slide(BLANK); title(s, "Objective", 4)
-box(s, 8.3, 1.4, 4.7, 5.4, ["Background", "Template matching = slide a known sound along a recording and score every position (NCC [4], [7])",
-    "Test data: ESC-50 [1], [2] clips joined with 1 s silences, so true positions are known", "CC BY-NC 3.0 [3]; 5 classes, 16 kHz"], 15, fill=LIGHT)
+box(s, 8.3, 1.4, 4.7, 5.4, ["Background", "Template matching = slide a known sound along a recording and score every position (NCC [1], [2])",
+    "Test data: ESC-50 [6], [7] clips joined with 1 s silences, so true positions are known", "CC BY-NC 3.0 [8]; 5 classes, 16 kHz"], 15, fill=LIGHT)
 box(s, 0.6, 1.4, 7.5, 5.4, [
     "Load ESC-50, convert to mono 16 kHz, normalise",
     "Join clips with 1 s silences; record exact spans as ground truth",
@@ -122,10 +120,10 @@ box(s, 0.6, 5.2, 12, 1.8, ["score[k] = sum x[k+n]·t[n] / ( sqrt(sum x[k+n]²) �
 
 s = prs.slides.add_slide(BLANK); title(s, "Work Done", 6)
 box(s, 0.5, 1.3, 5.8, 5.6, [
-    "NumPy [8] for all matching; SciPy [9] only for WAV reading and resampling",
+    "NumPy [10] for all matching; SciPy [11] only for WAV reading and resampling",
     "Data from your ESC-50 zip, a folder, or single-file GitHub download",
-    "Streamlit app [11]; Matplotlib [10]",
-    "pytest [12]: 6 tests, all pass",
+    "Streamlit app [13]; Matplotlib [12]",
+    "pytest [14]: 6 tests, all pass",
     "Chance baseline added to judge the results honestly",
 ], 18, bullet=True)
 pic(s, "../screenshots/app_repeat.png", 6.5, 1.3, h=5.4)
@@ -140,7 +138,7 @@ box(s, 0.4, 4.2, 12.5, 3.1, [
 ], 15, bullet=True)
 
 s = prs.slides.add_slide(BLANK); title(s, "References", 8)
-box(s, 0.5, 1.2, 12.4, 5.5, [f"[{n}] {REFS[n]}" for n in (17, 18, 1, 2, 3, 4, 7)], 12)
-box(s, 0.5, 6.8, 12.4, 0.5, ["Full list of 18 references in the report. [17] is the base paper."], 12, color=GREY)
+box(s, 0.5, 1.2, 12.4, 5.5, [f"[{n}] {REFS[n]}" for n in (1, 2, 3, 4, 5, 6, 7, 8)], 12)
+box(s, 0.5, 6.8, 12.4, 0.5, ["Full list of 17 references in the report. [1] is the base paper; [6] is cited only as the dataset source."], 12, color=GREY)
 prs.save(ROOT / "docs" / "presentation.pptx")
 print("slides", len(prs.slides))

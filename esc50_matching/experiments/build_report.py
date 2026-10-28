@@ -16,24 +16,23 @@ PAGES = json.loads((ROOT / "docs" / ".pages.json").read_text()) if (ROOT / "docs
 META = Esc50().meta()
 
 REFS = {
- 1: 'K. J. Piczak, "ESC: Dataset for Environmental Sound Classification", Proc. 23rd ACM International Conference on Multimedia (ACM Multimedia), 2015.',
- 2: 'K. J. Piczak, ESC-50: Dataset for Environmental Sound Classification (2,000 clips, 50 classes), github.com/karolpiczak/ESC-50.',
- 3: 'Creative Commons Attribution-NonCommercial 3.0 licence (CC BY-NC 3.0), creativecommons.org/licenses/by-nc/3.0/.',
- 4: 'M. A. Richards, Fundamentals of Radar Signal Processing, 2nd ed., McGraw-Hill, 2014.',
- 5: 'M. A. Richards, J. A. Scheer and W. A. Holm (eds.), Principles of Modern Radar: Basic Principles, SciTech Publishing, 2010.',
- 6: 'M. I. Skolnik, Radar Handbook, 3rd ed., McGraw-Hill, 2008.',
- 7: 'TU Berlin, "Matched Filter and Pulse Compression", chapter of the Scientific Python course, platform.commit.tu-berlin.de/en/book/sci-python/chapter/ch25/section/s01.',
- 8: 'NumPy documentation, numpy.org/doc/.',
- 9: 'SciPy documentation (scipy.io.wavfile, scipy.signal.resample_poly), docs.scipy.org/doc/scipy/.',
- 10: 'Matplotlib documentation, matplotlib.org/stable/.',
- 11: 'Streamlit documentation, docs.streamlit.io.',
- 12: 'pytest documentation, docs.pytest.org.',
- 13: 'python-docx documentation, python-docx.readthedocs.io.',
- 14: 'python-pptx documentation, python-pptx.readthedocs.io.',
- 15: 'Python standard library documentation (csv, zipfile, urllib), docs.python.org/3/library/.',
- 16: 'Freesound, the online sound database from which ESC-50 clips were extracted, freesound.org.',
- 17: 'I. Nolasco, S. Singh, V. Morfi, V. Lostanlen, A. Strandburg-Peshkin, E. Vidana-Vila, L. Gill, H. Pamula, H. Whitehead, I. Kiskin, F. H. Jensen, J. Morford, M. G. Emmerson, E. Versace, E. Grout, H. Liu, B. Ghani and D. Stowell, "Learning to detect an animal sound from five examples", Ecological Informatics, vol. 77, art. 102258, 2023, doi:10.1016/j.ecoinf.2023.102258 (BASE PAPER; also on arXiv:2305.13210).',
- 18: 'R. Tutul, I. Buchem and N. Pinkwart, "Algorithmic Accuracy as a Motivational Driver in Robot-Mediated Learning: A Comparative Study of Cross-Correlation and CNN-Based Sound Detection in an Interactive Quiz Game", arXiv:2607.16299, July 2026 (preprint).',
+ 1: 'R. Tutul, I. Buchem and N. Pinkwart, "Algorithmic Accuracy as a Motivational Driver in Robot-Mediated Learning: A Comparative Study of Cross-Correlation and CNN-Based Sound Detection in an Interactive Quiz Game", arXiv:2607.16299, July 2026 (open-access preprint; BASE PAPER).',
+ 2: 'I. Nolasco, S. Singh, V. Morfi, V. Lostanlen, A. Strandburg-Peshkin, E. Vidana-Vila, L. Gill, H. Pamula, H. Whitehead, I. Kiskin, F. H. Jensen, J. Morford, M. G. Emmerson, E. Versace, E. Grout, H. Liu, B. Ghani and D. Stowell, "Learning to detect an animal sound from five examples", Ecological Informatics, vol. 77, art. 102258, 2023, doi:10.1016/j.ecoinf.2023.102258 (also arXiv:2305.13210).',
+ 3: 'I. Nolasco et al., "Few-shot bioacoustic event detection at the DCASE 2022 challenge", arXiv preprint, July 2022.',
+ 4: 'Y. Gong, Y.-A. Chung and J. Glass, "AST: Audio Spectrogram Transformer", Proc. Interspeech, 2021, arXiv:2104.01778.',
+ 5: 'Q. Kong, Y. Cao, T. Iqbal, Y. Wang, W. Wang and M. D. Plumbley, "PANNs: Large-Scale Pretrained Audio Neural Networks for Audio Pattern Recognition", IEEE/ACM Trans. Audio, Speech, and Language Processing, vol. 28, pp. 2880-2894, 2020, doi:10.1109/TASLP.2020.3030497.',
+ 6: 'K. J. Piczak, "ESC: Dataset for Environmental Sound Classification", Proc. 23rd ACM International Conference on Multimedia (ACM Multimedia), 2015 (cited only as the source of the dataset).',
+ 7: 'K. J. Piczak, ESC-50: Dataset for Environmental Sound Classification (2,000 clips, 50 classes), github.com/karolpiczak/ESC-50.',
+ 8: 'Creative Commons Attribution-NonCommercial 3.0 licence (CC BY-NC 3.0), creativecommons.org/licenses/by-nc/3.0/.',
+ 9: 'Freesound, the online sound database from which ESC-50 clips were extracted, freesound.org.',
+ 10: 'NumPy documentation, numpy.org/doc/.',
+ 11: 'SciPy documentation (scipy.io.wavfile, scipy.signal.resample_poly), docs.scipy.org/doc/scipy/.',
+ 12: 'Matplotlib documentation, matplotlib.org/stable/.',
+ 13: 'Streamlit documentation, docs.streamlit.io.',
+ 14: 'pytest documentation, docs.pytest.org.',
+ 15: 'python-docx documentation, python-docx.readthedocs.io.',
+ 16: 'python-pptx documentation, python-pptx.readthedocs.io.',
+ 17: 'Python standard library documentation (csv, zipfile, urllib), docs.python.org/3/library/.',
 }
 (ROOT / "docs" / "refs.json").write_text(json.dumps(REFS))
 
@@ -228,54 +227,52 @@ doc.add_heading("1.1  Background", 2)
 para("Many sounds worth detecting, a door knock, a siren, a dog bark, have a characteristic waveform. If one example of the sound is known, "
      "a simple way to find it in a longer recording is template matching: slide the template along the recording and measure at every position how "
      "similar the two are. The similarity measure used here is normalised cross-correlation (NCC). Plain cross-correlation grows with loudness; dividing by the energy "
-     "of the template and of the current window of the recording makes the score independent of volume and bounded by 1, so a single threshold can be used [4], [7]. Template matching by correlation is a long-used baseline for detecting a known sound from few examples [17], [18].")
-para("To score such a detector honestly the true positions must be known. This project builds test recordings by joining clips from the ESC-50 dataset [1], [2] with silences "
+     "of the template and of the current window of the recording makes the score independent of volume and bounded by 1, so a single threshold can be used. Template matching by correlation is a simple baseline for detecting a known sound from few examples [2], [1].")
+para("To score such a detector honestly the true positions must be known. This project builds test recordings by joining clips from the ESC-50 dataset [6], [7] with silences "
      "between them, so the exact start and end of every clip is known and each detection can be marked correct or false.")
 doc.add_heading("1.2  Dataset and key figures", 2)
 cats = {r["category"] for r in META}
 folds = sorted({int(r["fold"]) for r in META})
 per_class = {c: sum(r["category"] == c for r in META) for c in CLASSES}
 table(["Quantity", "Value", "Source"], [
-    ["Clips in ESC-50", f"{len(META)}", "Counted from meta/esc50.csv [2]"],
-    ["Classes", f"{len(cats)}", "Counted from meta/esc50.csv [2]"],
-    ["Clips per class (chosen classes)", ", ".join(f"{c}: {n}" for c, n in per_class.items()), "Counted from meta/esc50.csv [2]"],
-    ["Cross-validation folds", f"{len(folds)} (folds {folds[0]}-{folds[-1]})", "meta/esc50.csv [2]"],
-    ["Clip length / original sample rate", "5 s / 44.1 kHz WAV", "Dataset description [1], [2]"],
+    ["Clips in ESC-50", f"{len(META)}", "Counted from meta/esc50.csv [7]"],
+    ["Classes", f"{len(cats)}", "Counted from meta/esc50.csv [7]"],
+    ["Clips per class (chosen classes)", ", ".join(f"{c}: {n}" for c, n in per_class.items()), "Counted from meta/esc50.csv [7]"],
+    ["Cross-validation folds", f"{len(folds)} (folds {folds[0]}-{folds[-1]})", "meta/esc50.csv [7]"],
+    ["Clip length / original sample rate", "5 s / 44.1 kHz WAV", "Dataset description [6], [7]"],
     ["Rate used in this project", f"{SR} Hz (resampled)", "Chosen to keep correlation fast"],
-    ["Classes used", ", ".join(CLASSES), "Chosen from the 50 class names in the CSV [2]"],
+    ["Classes used", ", ".join(CLASSES), "Chosen from the 50 class names in the CSV [7]"],
     ["Test recordings per class and condition", f"{R['setup']['n_recordings']}", "This project (Section 6)"],
-    ["Licence of the data", "CC BY-NC 3.0 (non-commercial, attribution)", "[3]; clips originate from Freesound [16]"],
+    ["Licence of the data", "CC BY-NC 3.0 (non-commercial, attribution)", "[8]; clips originate from Freesound [9]"],
 ], widths=[2.2, 2.4, 1.9], caption="Dataset facts (counted from the metadata file) and the setup of this project. No external usage statistics are claimed.")
-para("The data are used under the CC BY-NC 3.0 licence [3] for this non-commercial college project, with attribution to Piczak [1], [2].")
+para("The data are used under the CC BY-NC 3.0 licence [8] for this non-commercial college project, with attribution to Piczak [6], [7].")
 
 # ================================================================ 2
 h1("2  Comparative Study of Literature")
-para("Base paper: Nolasco et al. [17]. Its title, author list, journal, volume, article number and DOI were checked against repository records (journal volume 77, article 102258); "
-     "the paper is freely available as an arXiv preprint. Its content is described here from its abstract and from the descriptions of its template-matching baseline; "
-     "the full text was not read in this session, so no detailed result of that paper is quoted. [18] is a July 2026 preprint, summarised from its abstract only. "
-     "The other entries are listed from latest to oldest and summarise what each source is known for, not a full-text review.", italic=True, size=10)
+para("Base paper: Tutul, Buchem and Pinkwart [1] (arXiv:2607.16299, July 2026), an open-access preprint (title, authors, arXiv number and date checked against its arXiv listing; "
+     "its content is summarised from its abstract and listing only, the full text was not read, and as a preprint it is not peer reviewed). "
+     "All other papers are from 2020 to 2023, so none is newer than the base paper; they are listed from latest to oldest and are summarised from abstract-level descriptions, not full-text reviews. "
+     "The dataset paper [6] appears in the references only as the source of the data and is not part of this comparison.", italic=True, size=10)
 lit = [
-    ["Learning to detect an animal sound from five examples [17] (BASE PAPER)", "2023", "Ecological Informatics 77, 102258; doi:10.1016/j.ecoinf.2023.102258; arXiv:2305.13210 (open)",
-     "Treats sound event detection from only a few examples of the target sound, which is exactly the one-example setting of this project. Uses spectrogram cross-correlation template matching as a traditional baseline and reports that few-shot learning outperforms such signal-processing detectors.",
-     "Our waveform NCC shows the same limitation: it finds exact repeats but not different instances. Natural next steps: correlate spectrograms or learned embeddings instead of raw samples."],
-    ["Algorithmic Accuracy as a Motivational Driver in Robot-Mediated Learning (cross-correlation vs CNN sound detection) [18]", "2026", "arXiv:2607.16299 (preprint)",
-     "Uses a normalised-cross-correlation detector with a fixed threshold against a stored reference sound to detect buzzer sounds, and compares it with a CNN in a classroom game.",
-     "Preprint, abstract-level reading only; its claims are not independently checked here. Detection of one fixed, stereotyped sound, not different instances of a class."],
-    ["ESC: Dataset for Environmental Sound Classification [1], with the ESC-50 data [2]", "2015", "ACM Multimedia; GitHub",
-     "Supplies 2,000 labelled 5 s clips in 50 classes with a metadata file and fold assignment; the common benchmark for environmental sounds and the data used here.",
-     "Built for classification, not detection in long recordings; this project adds recordings with known clip positions."],
-    ["Fundamentals of Radar Signal Processing, 2nd ed. [4]", "2014", "McGraw-Hill (book)",
-     "Derives the matched filter and its implementation by correlation; basis for the correlation and normalisation used here.",
-     "Written for radar; sounds are not known-shape signals in white noise, so the optimality argument only partly carries over."],
-    ["Principles of Modern Radar: Basic Principles [5]", "2010", "SciTech (book)",
-     "Reference for correlation-based detection and detection thresholds.", "General reference."],
-    ["Radar Handbook, 3rd ed. [6]", "2008", "McGraw-Hill (handbook)",
-     "Broad reference on matched filtering and threshold detection.", "General reference."],
-    ["Matched Filter and Pulse Compression (Scientific Python course) [7]", "undated", "TU Berlin course material",
-     "Python explanation of correlation by FFT, used to cross-check the implementation approach.", "No normalisation or detection scoring."],
+    ["Algorithmic Accuracy as a Motivational Driver in Robot-Mediated Learning: cross-correlation vs CNN sound detection [1] (BASE PAPER)", "2026", "arXiv:2607.16299 (open-access preprint)",
+     "Detects a stored sound in live audio with a normalised correlation coefficient compared against a fixed threshold (no training), and compares it with a CNN detector in a classroom quiz game; reports that the cross-correlation detector worked better in that setting.",
+     "Detects one fixed, stereotyped sound and mainly studies learner motivation. This project measures precision, recall and F1 of NCC against known clip positions and shows where it fails (different recordings of one class)."],
+    ["Learning to detect an animal sound from five examples [2]", "2023", "Ecological Informatics 77, 102258; arXiv:2305.13210",
+     "Sound event detection from only a few examples of the target sound; uses spectrogram cross-correlation template matching as a traditional baseline and reports that few-shot learning outperforms such signal-processing detectors.",
+     "Suggests the next step for this project: correlate spectrograms or learned embeddings instead of raw waveforms."],
+    ["Few-shot bioacoustic event detection at the DCASE 2022 challenge [3]", "2022", "arXiv preprint (July 2022)",
+     "Overview of a community challenge on detecting a target sound from a few labelled examples, with datasets, baselines and submitted systems (the strongest used prototypical networks and transductive learning).",
+     "Shows few-shot detection is still open; this project covers only the simplest one-template case."],
+    ["AST: Audio Spectrogram Transformer [4]", "2021", "Interspeech 2021; arXiv:2104.01778",
+     "A purely attention-based classifier on spectrograms that reports 95.6 % accuracy on ESC-50, the dataset used here.",
+     "Needs labelled training data and classifies whole clips; it does not locate a sound inside a long recording."],
+    ["PANNs: Large-Scale Pretrained Audio Neural Networks for Audio Pattern Recognition [5]", "2020", "IEEE/ACM TASLP 28, 2880-2894",
+     "Networks pretrained on a large audio collection and transferred to other audio tasks, showing that learned features beat hand-crafted ones on many tasks.",
+     "Pretraining needs large data and compute; this project is a training-free baseline."],
 ]
-table(["Title", "Year", "Source", "Benefits", "Future scope"], lit, widths=[1.5, 0.5, 0.95, 2.0, 1.55], size=8,
-      caption="Comparative study (base paper first; then latest to oldest).")
+table(["Title", "Year", "Source", "Benefits", "Future scope"], lit, widths=[1.5, 0.45, 0.95, 2.1, 1.5], size=8,
+      caption="Comparative study (base paper first; then latest to oldest; all from 2020 or later).")
+
 
 # ================================================================ 3
 h1("3  Objective")
@@ -292,7 +289,7 @@ bullets([
 h1("4  Methodology")
 figure("fig_flow.png", "Flow chart of the system.")
 doc.add_heading("4.1  Preprocessing", 2)
-para("Each clip is converted to mono, resampled from 44.1 kHz to 16 kHz with a polyphase filter [9], scaled so that its peak is 1, and stripped of the digital-silence padding ESC-50 adds to short events "
+para("Each clip is converted to mono, resampled from 44.1 kHz to 16 kHz with a polyphase filter [11], scaled so that its peak is 1, and stripped of the digital-silence padding ESC-50 adds to short events "
      "(samples below 0.1 % of the peak at the start and end are removed).")
 doc.add_heading("4.2  Test recordings and ground truth", 2)
 para("A recording joins five clips separated by 1 s of silence in a random order: two occurrences of the template sound and three clips of the other classes. The start and end sample of every clip is stored. "
@@ -300,7 +297,7 @@ para("A recording joins five clips separated by 1 s of silence in a random order
      "In the **repeat** condition the occurrences are the template clip itself with a random gain of 0.5-1.5 and white noise at 20 dB SNR, which tests the method when the sound recurs exactly.")
 doc.add_heading("4.3  Normalised cross-correlation", 2)
 para("For template t of length m and recording x, the score at lag k is  c[k] = sum_n x[k+n] t[n] / ( sqrt(sum_n x[k+n]^2) x sqrt(sum_n t[n]^2) ). The numerator for all lags is one FFT-based correlation "
-     "(zero-padded, so linear), IFFT( FFT(x) x conj(FFT(t)) ) [8]. The window energy in the denominator is a difference of a running sum of x^2. The score lies in [-1, 1]; "
+     "(zero-padded, so linear), IFFT( FFT(x) x conj(FFT(t)) ) [10]. The window energy in the denominator is a difference of a running sum of x^2. The score lies in [-1, 1]; "
      "1 means the window is a scaled copy of the template. Windows with almost no energy (silence) are given score 0 so that quiet gaps cannot score highly.")
 doc.add_heading("4.4  Detection and scoring", 2)
 para("Local maxima of the score above the threshold are candidates. Non-maximum suppression keeps the strongest and discards any peak closer than one template length to a kept one. "
@@ -313,13 +310,13 @@ para("Local maxima of the score above the threshold are candidates. Non-maximum 
 h1("5  Work Done")
 doc.add_heading("5.1  Tools", 2)
 table(["Tool", "Used for", "Ref."], [
-    ["Python 3 (csv, zipfile, urllib)", "Metadata, reading clips from the zip or folder, downloading single files", "[15]"],
-    ["NumPy", "FFT correlation, running energy, peak picking, all core DSP", "[8]"],
-    ["SciPy", "WAV reading and polyphase resampling only (no matched-filter or correlation routines)", "[9]"],
-    ["Matplotlib", "Figures", "[10]"],
-    ["Streamlit", "Interactive app", "[11]"],
-    ["pytest", "Tests", "[12]"],
-    ["python-docx / python-pptx", "This report and the slides", "[13], [14]"],
+    ["Python 3 (csv, zipfile, urllib)", "Metadata, reading clips from the zip or folder, downloading single files", "[17]"],
+    ["NumPy", "FFT correlation, running energy, peak picking, all core DSP", "[10]"],
+    ["SciPy", "WAV reading and polyphase resampling only (no matched-filter or correlation routines)", "[11]"],
+    ["Matplotlib", "Figures", "[12]"],
+    ["Streamlit", "Interactive app", "[13]"],
+    ["pytest", "Tests", "[14]"],
+    ["python-docx / python-pptx", "This report and the slides", "[15], [16]"],
 ], widths=[1.9, 3.9, 0.7], caption="Tools used.")
 doc.add_heading("5.2  Implementation steps", 2)
 numbered([
@@ -363,7 +360,7 @@ bullets([
     "**Only some of these are above chance.** Dog and door_wood_knock clearly beat the chance baseline; rooster is slightly above; rain and siren are at chance level, so no skill is claimed for them. "
     "Part of the apparent F1 comes from the fact that true clips cover a large share of the recording, so even random detections often land in one.",
     "**The best thresholds are very low** (0.02-0.14 in the class condition), partly below the 0.1-0.9 range of the app's slider; at such thresholds the detector is close to picking arbitrary peaks. A large threshold gives zero recall for different instances.",
-    "Scores of true and other-class clips overlap strongly (Section 6.3), so a better representation (for example spectrogram features or learned few-shot models, as in the base paper [17]) would be needed to recognise a class from one example; that is outside this project's scope.",
+    "Scores of true and other-class clips overlap strongly (Section 6.3), so a better representation (for example spectrogram features or learned few-shot models, as in [2], [3]) would be needed to recognise a class from one example; that is outside this project's scope.",
     "The template choice is fixed (first fold-1 clip per class) and there are 30 recordings per class (60 true occurrences), so the numbers carry sampling uncertainty; a different template could give different class-condition results.",
     "The centre-in-span rule matters: a template longer than the true clip can place the window centre outside the clip.",
     f"The pytest suite has {N_TESTS} tests and {'some failed' if FAILED else 'all pass'}. The app was run without errors.",
