@@ -77,50 +77,50 @@ box(s, 0.8, 3.3, 11.7, 0.9, ["Finding where a known sound occurs in a longer rec
 box(s, 0.8, 4.5, 11.7, 2.6, ["Student name: [Student name]     Roll no: [Roll no]", "Guide name: [Guide name]",
                              "Department: [Department]     Institute: [Institute]", "Academic year: [Academic year]"], 18, color=RGBColor(255, 255, 255))
 
-s = prs.slides.add_slide(BLANK); title(s, "1  Introduction", 2)
-box(s, 0.5, 1.3, 7.0, 5.6, [
-    "Goal: find where a known sound occurs in a longer recording",
-    "Method: slide the template along the recording; score every position with normalised cross-correlation (NCC) [4], [7]",
-    "Dividing by window and template energy makes the score volume-independent, in [-1, 1]",
-    "Test data: ESC-50 [1], [2] clips joined with 1 s silences, so true positions are known",
-    "ESC-50: 2,000 clips, 50 classes, 5 s, 44.1 kHz; CC BY-NC 3.0 [3]; we use 5 classes at 16 kHz",
-], 18, bullet=True)
-pic(s, "fig_example.png", 7.7, 1.4, w=5.3)
+s = prs.slides.add_slide(BLANK); title(s, "Index", 2)
+items = ["Title", "Index", "Comparative Study of Literature", "Objective", "Methodology (Flow Chart)", "Work Done", "Results", "References"]
+for i, it in enumerate(items):
+    box(s, 1.2, 1.3 + i * 0.68, 1.0, 0.6, [f"{i + 1:02d}"], 24, color=BLUE, bold=True)
+    box(s, 2.4, 1.3 + i * 0.68, 9, 0.6, [it], 24)
+box(s, 1.2, 6.8, 11, 0.5, ["Template matching of environmental sounds with normalised cross-correlation (ESC-50)"], 14, color=GREY)
 
-s = prs.slides.add_slide(BLANK); title(s, "2  Comparative Study of Literature", 3)
+s = prs.slides.add_slide(BLANK); title(s, "Comparative Study of Literature", 3)
 rows = [("Paper", "Year", "Takeaway"),
-        ("[Base paper to be verified by the student]", "[Year]", "[Not verified within the time limit]"),
-        ("Piczak, ESC dataset [1], [2]", "2015", "Labelled clips, 50 classes; benchmark data used here"),
+        ("BASE PAPER: Nolasco et al., Learning to detect an animal sound from five examples, Ecological Informatics [17]", "2023", "Detect a sound from few examples; template matching is the classic baseline"),
+        ("Tutul, Buchem, Pinkwart, cross-correlation vs CNN sound detection (arXiv preprint) [18]", "2026", "NCC with a fixed threshold detects a stored sound"),
+        ("Piczak, ESC dataset [1], [2]", "2015", "Labelled clips, 50 classes; data used here"),
         ("Richards, Fundamentals of Radar Signal Processing [4]", "2014", "Matched filter and correlation detection"),
         ("Richards, Scheer, Holm, Principles of Modern Radar [5]", "2010", "Correlation detection and thresholds"),
         ("Skolnik, Radar Handbook [6]", "2008", "Matched filtering reference"),
         ("TU Berlin, Matched Filter and Pulse Compression [7]", "n.d.", "FFT correlation in Python")]
-tbl = s.shapes.add_table(len(rows), 3, Inches(0.5), Inches(1.4), Inches(12.3), Inches(4.4)).table
+tbl = s.shapes.add_table(len(rows), 3, Inches(0.5), Inches(1.3), Inches(12.3), Inches(4.6)).table
 for j, w in enumerate((6.3, 1.3, 4.7)):
     tbl.columns[j].width = Inches(w)
 for i, r in enumerate(rows):
     for j, t in enumerate(r):
         c = tbl.cell(i, j); c.text = ""
-        runs(c.text_frame.paragraphs[0], t, 16, bold=(i == 0), color=RGBColor(255, 255, 255) if i == 0 else None)
+        runs(c.text_frame.paragraphs[0], t, 14, bold=(i == 0), color=RGBColor(255, 255, 255) if i == 0 else None)
         c.fill.solid(); c.fill.fore_color.rgb = NAVY if i == 0 else (LIGHT if i % 2 else RGBColor(255, 255, 255))
-box(s, 0.5, 6.1, 12, 0.9, ["Base paper not verified (no access to check authors, year, venue, DOI) - left as a placeholder. Other rows are summaries, not full-text reviews."], 14, color=GREY)
+box(s, 0.5, 6.3, 12.3, 0.9, ["Base paper: title, authors, journal and DOI checked against repository records; summarised from its abstract (full text not read). Latest-to-oldest after the base paper."], 13, color=GREY)
 
-s = prs.slides.add_slide(BLANK); title(s, "3  Objective", 4)
-box(s, 0.6, 1.4, 12, 5.4, [
+s = prs.slides.add_slide(BLANK); title(s, "Objective", 4)
+box(s, 8.3, 1.4, 4.7, 5.4, ["Background", "Template matching = slide a known sound along a recording and score every position (NCC [4], [7])",
+    "Test data: ESC-50 [1], [2] clips joined with 1 s silences, so true positions are known", "CC BY-NC 3.0 [3]; 5 classes, 16 kHz"], 15, fill=LIGHT)
+box(s, 0.6, 1.4, 7.5, 5.4, [
     "Load ESC-50, convert to mono 16 kHz, normalise",
     "Join clips with 1 s silences; record exact spans as ground truth",
     "FFT-based normalised cross-correlation in NumPy; threshold + non-maximum suppression",
     "Detection correct if its centre lies inside a true clip; precision, recall, F1",
     "Streamlit app with a threshold slider and plots",
     "Experiment: P/R/F1 vs threshold, 5 classes, 30 recordings each; best threshold per class",
-], 22, bullet=True)
+], 18, bullet=True)
 
-s = prs.slides.add_slide(BLANK); title(s, "4  Methodology", 5)
+s = prs.slides.add_slide(BLANK); title(s, "Methodology (Flow Chart)", 5)
 pic(s, "fig_flow.png", 0.4, 1.3, w=12.5)
 box(s, 0.6, 5.2, 12, 1.8, ["score[k] = sum x[k+n]·t[n] / ( sqrt(sum x[k+n]²) · sqrt(sum t²) )   (numerator by FFT, window energy by running sum)",
                            "Two test conditions: other clips of the class  |  the template itself (gain 0.5–1.5, 20 dB noise)"], 17, bullet=True)
 
-s = prs.slides.add_slide(BLANK); title(s, "5  Work Done", 6)
+s = prs.slides.add_slide(BLANK); title(s, "Work Done", 6)
 box(s, 0.5, 1.3, 5.8, 5.6, [
     "NumPy [8] for all matching; SciPy [9] only for WAV reading and resampling",
     "Data from your ESC-50 zip, a folder, or single-file GitHub download",
@@ -130,7 +130,7 @@ box(s, 0.5, 1.3, 5.8, 5.6, [
 ], 18, bullet=True)
 pic(s, "../screenshots/app_repeat.png", 6.5, 1.3, h=5.4)
 
-s = prs.slides.add_slide(BLANK); title(s, "6  Results", 7)
+s = prs.slides.add_slide(BLANK); title(s, "Results", 7)
 pic(s, "fig_prf_class.png", 0.3, 1.1, w=12.7)
 box(s, 0.4, 4.2, 12.5, 3.1, [
     "Same sound repeated (gain 0.5–1.5, 20 dB noise): F1 = " + ", ".join(f"{c} {float(RP[c]['F1']):.2f}" for c in RP) + " (no false detections)",
@@ -139,8 +139,8 @@ box(s, 0.4, 4.2, 12.5, 3.1, [
     "Best thresholds are very low (0.02–0.14): raw-waveform NCC does not generalise across different recordings",
 ], 15, bullet=True)
 
-s = prs.slides.add_slide(BLANK); title(s, "7  References", 8)
-box(s, 0.5, 1.2, 12.4, 5.5, [f"[{n}] {REFS[n]}" for n in (1, 2, 3, 4, 5, 7)] + ["Base paper: [Base paper to be verified by the student]"], 14)
-box(s, 0.5, 6.8, 12.4, 0.5, ["Full list of 16 references in the report."], 12, color=GREY)
+s = prs.slides.add_slide(BLANK); title(s, "References", 8)
+box(s, 0.5, 1.2, 12.4, 5.5, [f"[{n}] {REFS[n]}" for n in (17, 18, 1, 2, 3, 4, 7)], 12)
+box(s, 0.5, 6.8, 12.4, 0.5, ["Full list of 18 references in the report. [17] is the base paper."], 12, color=GREY)
 prs.save(ROOT / "docs" / "presentation.pptx")
 print("slides", len(prs.slides))

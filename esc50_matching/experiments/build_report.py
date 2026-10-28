@@ -32,6 +32,8 @@ REFS = {
  14: 'python-pptx documentation, python-pptx.readthedocs.io.',
  15: 'Python standard library documentation (csv, zipfile, urllib), docs.python.org/3/library/.',
  16: 'Freesound, the online sound database from which ESC-50 clips were extracted, freesound.org.',
+ 17: 'I. Nolasco, S. Singh, V. Morfi, V. Lostanlen, A. Strandburg-Peshkin, E. Vidana-Vila, L. Gill, H. Pamula, H. Whitehead, I. Kiskin, F. H. Jensen, J. Morford, M. G. Emmerson, E. Versace, E. Grout, H. Liu, B. Ghani and D. Stowell, "Learning to detect an animal sound from five examples", Ecological Informatics, vol. 77, art. 102258, 2023, doi:10.1016/j.ecoinf.2023.102258 (BASE PAPER; also on arXiv:2305.13210).',
+ 18: 'R. Tutul, I. Buchem and N. Pinkwart, "Algorithmic Accuracy as a Motivational Driver in Robot-Mediated Learning: A Comparative Study of Cross-Correlation and CNN-Based Sound Detection in an Interactive Quiz Game", arXiv:2607.16299, July 2026 (preprint).',
 }
 (ROOT / "docs" / "refs.json").write_text(json.dumps(REFS))
 
@@ -226,7 +228,7 @@ doc.add_heading("1.1  Background", 2)
 para("Many sounds worth detecting, a door knock, a siren, a dog bark, have a characteristic waveform. If one example of the sound is known, "
      "a simple way to find it in a longer recording is template matching: slide the template along the recording and measure at every position how "
      "similar the two are. The similarity measure used here is normalised cross-correlation (NCC). Plain cross-correlation grows with loudness; dividing by the energy "
-     "of the template and of the current window of the recording makes the score independent of volume and bounded by 1, so a single threshold can be used [4], [7].")
+     "of the template and of the current window of the recording makes the score independent of volume and bounded by 1, so a single threshold can be used [4], [7]. Template matching by correlation is a long-used baseline for detecting a known sound from few examples [17], [18].")
 para("To score such a detector honestly the true positions must be known. This project builds test recordings by joining clips from the ESC-50 dataset [1], [2] with silences "
      "between them, so the exact start and end of every clip is known and each detection can be marked correct or false.")
 doc.add_heading("1.2  Dataset and key figures", 2)
@@ -248,11 +250,17 @@ para("The data are used under the CC BY-NC 3.0 licence [3] for this non-commerci
 
 # ================================================================ 2
 h1("2  Comparative Study of Literature")
-para("The base paper (a recent open-access paper on template matching or correlation-based sound event detection) could **not be verified** within the time limit: "
-     "this session had no access to publisher or index websites to check authors, year, venue and DOI, and no unverified paper is cited. It is left as a highlighted placeholder for the "
-     "student to fill in. The other entries are listed from latest to oldest; their summaries describe what each source is known for, not a full-text review.", italic=True, size=10)
+para("Base paper: Nolasco et al. [17]. Its title, author list, journal, volume, article number and DOI were checked against repository records (journal volume 77, article 102258); "
+     "the paper is freely available as an arXiv preprint. Its content is described here from its abstract and from the descriptions of its template-matching baseline; "
+     "the full text was not read in this session, so no detailed result of that paper is quoted. [18] is a July 2026 preprint, summarised from its abstract only. "
+     "The other entries are listed from latest to oldest and summarise what each source is known for, not a full-text review.", italic=True, size=10)
 lit = [
-    ["[Base paper to be verified by the student]", "[Year]", "[Venue / DOI]", "[Benefits]", "[Future scope]"],
+    ["Learning to detect an animal sound from five examples [17] (BASE PAPER)", "2023", "Ecological Informatics 77, 102258; doi:10.1016/j.ecoinf.2023.102258; arXiv:2305.13210 (open)",
+     "Treats sound event detection from only a few examples of the target sound, which is exactly the one-example setting of this project. Uses spectrogram cross-correlation template matching as a traditional baseline and reports that few-shot learning outperforms such signal-processing detectors.",
+     "Our waveform NCC shows the same limitation: it finds exact repeats but not different instances. Natural next steps: correlate spectrograms or learned embeddings instead of raw samples."],
+    ["Algorithmic Accuracy as a Motivational Driver in Robot-Mediated Learning (cross-correlation vs CNN sound detection) [18]", "2026", "arXiv:2607.16299 (preprint)",
+     "Uses a normalised-cross-correlation detector with a fixed threshold against a stored reference sound to detect buzzer sounds, and compares it with a CNN in a classroom game.",
+     "Preprint, abstract-level reading only; its claims are not independently checked here. Detection of one fixed, stereotyped sound, not different instances of a class."],
     ["ESC: Dataset for Environmental Sound Classification [1], with the ESC-50 data [2]", "2015", "ACM Multimedia; GitHub",
      "Supplies 2,000 labelled 5 s clips in 50 classes with a metadata file and fold assignment; the common benchmark for environmental sounds and the data used here.",
      "Built for classification, not detection in long recordings; this project adds recordings with known clip positions."],
@@ -355,7 +363,7 @@ bullets([
     "**Only some of these are above chance.** Dog and door_wood_knock clearly beat the chance baseline; rooster is slightly above; rain and siren are at chance level, so no skill is claimed for them. "
     "Part of the apparent F1 comes from the fact that true clips cover a large share of the recording, so even random detections often land in one.",
     "**The best thresholds are very low** (0.02-0.14 in the class condition), partly below the 0.1-0.9 range of the app's slider; at such thresholds the detector is close to picking arbitrary peaks. A large threshold gives zero recall for different instances.",
-    "Scores of true and other-class clips overlap strongly (Section 6.3), so a better representation (for example spectrogram features) would be needed to recognise a class from one example; that is outside this project's scope.",
+    "Scores of true and other-class clips overlap strongly (Section 6.3), so a better representation (for example spectrogram features or learned few-shot models, as in the base paper [17]) would be needed to recognise a class from one example; that is outside this project's scope.",
     "The template choice is fixed (first fold-1 clip per class) and there are 30 recordings per class (60 true occurrences), so the numbers carry sampling uncertainty; a different template could give different class-condition results.",
     "The centre-in-span rule matters: a template longer than the true clip can place the window centre outside the clip.",
     f"The pytest suite has {N_TESTS} tests and {'some failed' if FAILED else 'all pass'}. The app was run without errors.",
@@ -369,8 +377,6 @@ for n, text in REFS.items():
     p.paragraph_format.first_line_indent = Inches(-0.4)
     add_runs(p, f"[{n}]\t{text}", size=10)
     p.paragraph_format.tab_stops.add_tab_stop(Inches(0.4))
-p = doc.add_paragraph()
-add_runs(p, "Base paper: [Base paper to be verified by the student]", size=10)
 
 doc.save(OUT)
 print("saved", OUT)
