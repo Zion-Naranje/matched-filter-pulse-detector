@@ -39,6 +39,14 @@ st.write("Pick a **template** sound. The app slides it along a longer recording 
          "recording matches the template (1.0 = identical shape, 0 = unrelated). Peaks above the threshold are detections; "
          "green shading marks where the template sound really is.")
 
+def qp(name, default, cast=str):
+    """Initial widget value from the page link (?cls=dog&thr=0.3 ...), so demo cases can be opened by link."""
+    try:
+        return cast(st.query_params.get(name, default))
+    except (TypeError, ValueError):
+        return default
+
+
 with st.sidebar:
     st.header("Settings")
     path = st.text_input("ESC-50 zip or folder (optional)", value="", help="Path to ESC-50-master.zip or the extracted folder. "
@@ -49,15 +57,16 @@ with st.sidebar:
     except Exception as exc:
         st.error(str(exc))
         st.stop()
-    cls = st.selectbox("Template class", CLASSES)
+    cls = st.selectbox("Template class", CLASSES, index=CLASSES.index(qp("cls", "dog")) if qp("cls", "dog") in CLASSES else 0)
     src = st.radio("Test recording", ["Generated mix", "Upload WAV"])
-    thr = st.slider("Correlation threshold", 0.1, 0.9, 0.3, 0.01)
+    thr = st.slider("Correlation threshold", 0.1, 0.9, min(max(qp("thr", 0.3, float), 0.1), 0.9), 0.01)
     if src == "Generated mix":
         mode = st.radio("The sound to find occurs as", ["class", "repeat"], format_func=lambda m: {
-            "class": "other clips of the same class (hard)", "repeat": "the template itself, noisier (easy)"}[m])
-        seed = st.number_input("Random mix (seed)", 0, 9999, 1)
-        n_pos = st.slider("Occurrences", 1, 4, 2)
-        n_neg = st.slider("Other-class clips", 0, 6, 3)
+            "class": "other clips of the same class (hard)", "repeat": "the template itself, noisier (easy)"}[m],
+            index=0 if qp("mode", "class") == "class" else 1)
+        seed = st.number_input("Random mix (seed)", 0, 9999, qp("seed", 1, int))
+        n_pos = st.slider("Occurrences", 1, 4, qp("npos", 2, int))
+        n_neg = st.slider("Other-class clips", 0, 6, qp("nneg", 3, int))
 
 try:
     if src == "Generated mix":
