@@ -208,8 +208,10 @@ para("Template Matching of Environmental Sounds using Normalised Cross-Correlati
 para("Finding where a known sound occurs in a longer recording, scored against known ground truth (ESC-50)", italic=True, size=12, align=WD_ALIGN_PARAGRAPH.CENTER)
 for _ in range(3):
     para()
-for label in ("Student name", "Roll no", "Guide name", "Department", "Institute", "Academic year"):
-    para(f"{label}: [{label}]", size=13, align=WD_ALIGN_PARAGRAPH.CENTER)
+DETAILS = {"Submitted by": "Zion Naranje (Roll No. 09)", "Guide": "Ms. Purvi Agarwal", "Department": "Computer Engineering",
+           "Institute": "St. Francis Institute of Technology", "Academic Year": "2026-2027"}
+for label, val in DETAILS.items():
+    para(f"{label}: {val}", size=13, align=WD_ALIGN_PARAGRAPH.CENTER)
 
 # ================================================================ INDEX
 doc.add_page_break()

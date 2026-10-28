@@ -74,8 +74,8 @@ bg = s.shapes.add_shape(1, 0, 0, prs.slide_width, prs.slide_height)
 bg.fill.solid(); bg.fill.fore_color.rgb = NAVY; bg.line.fill.background()
 box(s, 0.8, 1.3, 11.7, 1.8, ["Template Matching of Environmental Sounds", "using Normalised Cross-Correlation"], 40, color=RGBColor(255, 255, 255), bold=True)
 box(s, 0.8, 3.3, 11.7, 0.9, ["Finding where a known sound occurs in a longer recording (ESC-50)"], 22, color=RGBColor(0xCF, 0xDD, 0xEE))
-box(s, 0.8, 4.5, 11.7, 2.6, ["Student name: [Student name]     Roll no: [Roll no]", "Guide name: [Guide name]",
-                             "Department: [Department]     Institute: [Institute]", "Academic year: [Academic year]"], 18, color=RGBColor(255, 255, 255))
+box(s, 0.8, 4.5, 11.7, 2.6, ["Submitted by: Zion Naranje (Roll No. 09)", "Guide: Ms. Purvi Agarwal",
+                             "Department: Computer Engineering", "Institute: St. Francis Institute of Technology, 2026-2027"], 18, color=RGBColor(255, 255, 255))
 
 s = prs.slides.add_slide(BLANK); title(s, "Index", 2)
 items = ["Title", "Index", "Comparative Study of Literature", "Objective", "Methodology (Flow Chart)", "Work Done", "Results", "References"]
